@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>C.E.S.C</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #e1dede;
+        margin: 0;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px; /* Increased from 900px */
+        margin: 2rem auto;
+        background: white;
+        padding: 35px; /* Increased from 25px */
+        border-radius: 50px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      /* Login/Signup container */
+      #login-container {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 300px;
+        padding: 20px;
+        border-radius: 25px;
+        box-shadow: 0 0 15px rgba(55, 116, 165, 0.2);
+        background: #f7f9fc;
+      }
+
+      form h2 {
+        margin: 0 0 10px 0;
+        text-align: center;
+        color: #3774a5;
+      }
+
+      input[type="text"],
+      input[type="password"],
+      input[type="email"] {
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        font-size: 14px;
+      }
+
+      button {
+        background-color: #3774a5;
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 30px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #2c5682;
+      }
+
+      .toggle-link {
+        color: #3774a5;
+        text-align: center;
+        cursor: pointer;
+        font-size: 14px;
+        text-decoration: underline;
+        margin-top: 10px;
+        user-select: none;
+      }
+
+      /* Date selection styles */
+      .date-input-section {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        align-items: flex-end;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+        width: 100%;
+      }
+
+      .input-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      label {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 5px;
+        font-weight: 500;
+      }
+
+      input[type="date"] {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        width: 180px;
+      }
+
+      #fetch-btn {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s;
+        height: 38px;
+      }
+
+      #fetch-btn:hover {
+        background-color: #45a049;
+      }
+
+      /* Table styles */
+      .table-container {
+        max-height: 500px;
+        overflow-y: auto;
+        overflow-x: auto;
+        width: 100%;
+        margin-top: 20px;
+      }
+
+      #data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        display: none;
+        table-layout: fixed;
+      }
+
+      #data-table th,
+      #data-table td {
+        border: 1px solid #ddd;
+        padding: 8px 10px;
+        text-align: left;
+        word-wrap: break-word;
+      }
+
+      #data-table th {
+        background-color: #f2f2f2;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        white-space: nowrap;
+        font-size: 13px;
+        padding: 6px 8px;
+      }
+      #data-table th {
+        word-wrap: break-word;
+        word-break: break-word;
+        white-space: normal; /* allow wrapping */
+      }
+      #date-range-display {
+        text-align: center;
+        width: 100%;
+        margin-top: 15px;
+        font-weight: 600;
+        color: #333;
+        display: block; /* ensure it behaves like a block for centering */
+      }
+
+      #data-table input[type="text"] {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 4px 6px;
+        font-size: 13px;
+      }
+
+      /* Checkbox column fixed width */
+      #data-table th:nth-child(1),
+      #data-table td:nth-child(1) {
+        width: 40px;
+        text-align: center;
+      }
+
+      #data-table th:nth-child(2),
+      #data-table td:nth-child(2) {
+        width: 50px;
+      }
+
+      #data-table th:nth-child(3),
+      #data-table td:nth-child(3),
+      #data-table th:nth-child(4),
+      #data-table td:nth-child(4) {
+        width: 130px;
+      }
+
+      #data-table th:nth-child(5),
+      #data-table td:nth-child(5),
+      #data-table th:nth-child(6),
+      #data-table td:nth-child(6),
+      #data-table th:nth-child(7),
+      #data-table td:nth-child(7),
+      #data-table th:nth-child(8),
+      #data-table td:nth-child(8) {
+        width: 130px;
+      }
+
+      .actions {
+        margin-top: 20px;
+        display: none;
+        gap: 10px;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .actions button {
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      #clear-btn {
+        background-color: #f44336;
+        color: white;
+        border: none;
+      }
+
+      #submit-btn {
+        background-color: #2196f3;
+        color: white;
+        border: none;
+      }
+
+      .header {
+        text-align: center;
+        color: #3774a5;
+        margin-bottom: 20px;
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .master-lock {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+        font-weight: bold;
+        color: #555;
+      }
+
+      .locked-message {
+        color: #f44336;
+        font-style: italic;
+        margin-top: 10px;
+        display: none;
+      }
+
+      input[type="checkbox"] {
+        cursor: pointer;
+      }
+
+      input[type="text"]:disabled {
+        background-color: #f9f9f9;
+        color: #555;
+        border: none;
+      }
+      #date-range-display {
+        margin-top: 15px;
+        font-weight: 600;
+        color: #333;
+        display: none;
+      }
+      .category-btn {
+        margin: 0 8px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        border: 1px solid #3774a5;
+        background: white;
+        color: #3774a5;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background-color 0.3s, color 0.3s;
+      }
+      .category-btn:hover {
+        background-color: #3774a5;
+        color: white;
+      }
+      .category-btn.active {
+        background-color: #3774a5;
+        color: white;
+      }
+      #data-category-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin: 20px auto;
+        max-width: 1000px;
+      }
+
+      .category-btn {
+        background-color: white;
+        color: #1eae5f;
+        border: 2px solid #16a744;
+        border-radius: 20px;
+        padding: 10px 18px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+      }
+
+      .category-btn:hover {
+        background-color: #13ac20;
+        color: white;
+      }
+
+      .category-btn.active {
+        background-color: #0c9c43;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+  
+    <h1 class="header">ENTRY MODULE FOR ENERGY ACCOUNTING AND AUDIT SYSTEM</h1>
+    <!-- LOGIN / SIGNUP CONTAINER (Visible initially) -->
+    <div class="container" id="login-container">
+      <!-- LOGIN FORM (default visible) -->
+      <form id="login-form" novalidate>
+        <h2>Login</h2>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          required
+          autocomplete="email"
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+          autocomplete="current-password"
+        />
+        <button type="submit">Login</button>
+        <div class="toggle-link" id="show-signup">
+          Don't have an account? Sign Up
+        </div>
+      </form>
+
+      <!-- SIGNUP FORM (default hidden) -->
+      <form id="signup-form" class="hidden" novalidate>
+        <h2>Sign Up</h2>
+        <input
+          type="text"
+          name="new_username"
+          placeholder="Username"
+          required
+          autocomplete="username"
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          required
+          autocomplete="email"
+        />
+        <input
+          type="password"
+          name="new_password"
+          placeholder="Password"
+          required
+          autocomplete="new-password"
+        />
+        <button type="submit">Sign Up</button>
+        <div class="toggle-link" id="show-login">
+          Already have an account? Login
+        </div>
+      </form>
+    </div>
+
+    <!-- DATE SELECTION CONTAINER (Hidden initially) -->
+
+    <div
+      class="container hidden"
+      id="date-selection-container"
+      style="display: none"
+    >
+      <div class="date-input-section">
+        <div class="input-group">
+          <label for="start-date"></label>
+          <input type="date" id="start-date" />
+        </div>
+
+        <div class="input-group">
+          <label for="end-date"></label>
+          <input type="date" id="end-date" />
+        </div>
+
+        <button id="fetch-btn">Fetch Data</button>
+      </div>
+      <div
+        id="data-category-buttons"
+        style="text-align: center; margin-bottom: 20px"
+      >
+        <button class="category-btn" id="general-info-btn">General Info</button>
+        <button class="category-btn" data-category="infrastructure">
+          Summary
+        </button>
+        <button class="category-btn" data-category="sales">
+          Infrastructure details
+        </button>
+        <button class="category-btn" data-category="consumption">
+          Division Wise Loss
+        </button>
+        <button class="category-btn" data-category="infrastructure">
+          Detail of Input Energy and Infrastructure
+        </button>
+        <button class="category-btn" data-category="sales">
+          Consumer Detail
+        </button>
+        <button class="category-btn" data-category="consumption">
+          DT Wise losses
+        </button>
+        <button class="category-btn" data-category="infrastructure">
+          Detail of Feeder level
+        </button>
+        <button class="category-btn" data-category="sales">
+          Subsidy Detail
+        </button>
+      </div>
+      <div id="date-range-display"></div>
+      <div id="general-info-container"></div>
+      <div id="controls-container"></div>
+
+      <!-- TABLE CONTAINER -->
+      <div class="table-container">
+        <table id="data-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Sr No.</th>
+              <th>Category</th>
+              <th>Voltage Level</th>
+              <th>Consumer Count</th>
+              <th>Total Consumption</th>
+              <th>Remarks</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+
+      <div class="actions">
+        <button id="clear-btn">Clear</button>
+        <button id="submit-btn">Submit</button>
+        <button id="back">Back</button>
+      </div>
+    </div>
+
+    <script>
+      // Toggle between login and signup forms
+      const loginForm = document.getElementById("login-form");
+      const signupForm = document.getElementById("signup-form");
+      const loginContainer = document.getElementById("login-container");
+      const dateSelectionContainer = document.getElementById(
+        "date-selection-container"
+      );
+
+      document.getElementById("show-signup").addEventListener("click", () => {
+        loginForm.classList.add("hidden");
+        signupForm.classList.remove("hidden");
+      });
+
+      document.getElementById("show-login").addEventListener("click", () => {
+        signupForm.classList.add("hidden");
+        loginForm.classList.remove("hidden");
+      });
+
+      // Backend base URL
+      const BASE_URL = "http://localhost:8080/api/auth";
+
+      // LOGIN form submission handler
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = loginForm.email.value.trim();
+        const password = loginForm.password.value.trim();
+
+        if (!email || !password) {
+          alert("Please enter email and password");
+          return;
+        }
+
+        try {
+          const response = await fetch(`${BASE_URL}/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            alert(
+              "Login failed: " + (errorData.message || response.statusText)
+            );
+            return;
+          }
+
+          const data = await response.json();
+          console.log("Login successful:", data);
+
+          // TODO: Save auth token or user info if applicable
+          // For now, just proceed to date selection UI
+          loginContainer.style.display = "none";
+          dateSelectionContainer.style.display = "block";
+        } catch (err) {
+          console.error("Login error:", err);
+          alert("Error during login. Check console for details.");
+        }
+      });
+
+      // SIGNUP form submission handler
+      signupForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const username = signupForm.new_username.value.trim();
+        const email = signupForm.email.value.trim();
+        const password = signupForm.new_password.value.trim();
+
+        if (!username || !email || !password) {
+          alert("Please fill all signup fields");
+          return;
+        }
+
+        try {
+          const response = await fetch(`${BASE_URL}/signup`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            // Use "name" to match backend DTO
+            body: JSON.stringify({ name: username, email, password }),
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            alert(
+              "Signup failed: " + (errorData.message || response.statusText)
+            );
+            return;
+          }
+
+          const data = await response.json();
+          console.log("Signup successful:", data);
+          alert("Signup successful! Please login.");
+
+          // Switch to login form after successful signup
+          signupForm.classList.add("hidden");
+          loginForm.classList.remove("hidden");
+          signupForm.reset();
+        } catch (err) {
+          console.error("Signup error:", err);
+          alert("Error during signup. Check console for details.");
+        }
+      });
+    </script>
+    <script src="Consumer_details.js"></script>
+    <script src="General_info.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  </body>
+</html>
