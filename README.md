@@ -21,9 +21,14 @@ Consumer Details Table Page brings the data from the database and shows it to th
 Other features are listed below:-
 
 1)In Login/Sign-up page all the fields are mandatory if any field is empty the page pops an alert which states that “All fields are mandatory”.
+<br><br/>
 2)In Date selection page user have to select both the dates correctly to view the data for that date range.
+<br><br/>
 3)The data from database table is accessed through server as follows:
+<br><br/>
 a)First the editor enters the date range.
+<br><br/>
 b)If data for the entered date range exist in EA_CONS_CNSP_DTL then the data is fetched from the database and shown on screen , if it does not exist then all the data of EA_CONS_CNSP_HDR is first copied to EA_CONS_CNSP_DTL then that copied data is shown to the user for that date range.
+<br><br/>
 c)The editor can edit the data and can save the changes to the database
 The editor can also download the data in Excel format for submission.
